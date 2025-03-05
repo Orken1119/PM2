@@ -1,15 +1,16 @@
 package controller
 
 import (
-	"github.com/Orken1119/PM2/internal/controllers/auth/middleware"
+	"github.com/Orken1119/PM2/internal/controllers/middleware"
 	pkg "github.com/Orken1119/PM2/pkg"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"fmt"
+	docs "github.com/Orken1119/PM2/docs"
+
 
 	"github.com/Orken1119/PM2/internal/controllers/auth"
-	"github.com/Orken1119/PM2internal/controllers/auth/user"
+	"github.com/Orken1119/PM2/internal/controllers/user"
 	repository "github.com/Orken1119/PM2/internal/repositories"
 )
 
@@ -35,4 +36,8 @@ func Setup(app pkg.Application, router *gin.Engine) {
 		userRouter.GET("/profile", userController.GetProfile)
 	}
 
+	adminRouter := router.Group("/admin")
+	{
+		adminRouter.GET("/profile", userController.GetProfile)
+	}
 }

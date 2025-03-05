@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	models "github.com/Orken1119/PM2/internal/models/auth_models"
+	models "github.com/Orken1119/PM2/internal/models"
 
 	"errors"
 	"strings"

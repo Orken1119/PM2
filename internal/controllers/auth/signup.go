@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"unicode"
 
-	"github.com/Orken1119/PM2/internal/controllers/auth_controller/tokenutil"
-	models "github.com/Orken1119/PM2/internal/models/auth_models"
+	"github.com/Orken1119/PM2/internal/controllers/tokenutil"
+	models "github.com/Orken1119/PM2/internal/models"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -15,6 +15,7 @@ type AuthController struct {
 	UserRepository models.UserRepository
 }
 
+// @Tags auth-controller
 //	    @Accept		json
 //	    @Produce	json
 //	    @Param request body models.UserRequest true "query params"

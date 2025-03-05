@@ -1,4 +1,4 @@
-package auth
+package admin
 
 import (
 	"net/http"
@@ -6,20 +6,24 @@ import (
 	"github.com/Orken1119/PM2/internal/controllers/tokenutil"
 	models "github.com/Orken1119/PM2/internal/models"
 	"github.com/gin-gonic/gin"
-	"golang.org/x/crypto/bcrypt"
 )
 
-// @Tags auth-controller
-// @Accept json
-// @Produce json
-// @Param request body models.LoginRequest true "query params"
-// @Success 200 {object} models.SuccessResponse
-// @Failure default {object} models.ErrorResponse
-// @Router /signin [post]
-func (lc *AuthController) Signin(c *gin.Context) {
-	var loginRequest models.LoginRequest
+type AdminController struct {
+	UserRepository models.UserRepository
+}
 
-	err := c.ShouldBind(&loginRequest)
+// @Tags admin-controller
+// @Summary Add user
+//	    @Accept		json
+//	    @Produce	json
+//	    @Param request body models.AddUser true "query params"
+//	    @Success	200		{object}	models.SuccessResponse
+//		@Failure	default	{object}	models.ErrorResponse
+//	    @Router		/admin/add-user [post]
+func (ad AdminController) AddUser(c *gin.Context) {
+	var request models.AddUser
+
+	err := c.ShouldBind(&request)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			Result: []models.ErrorDetail{
@@ -32,19 +36,23 @@ func (lc *AuthController) Signin(c *gin.Context) {
 		return
 	}
 
-	if loginRequest.Email == "" || loginRequest.Password == "" {
+	_, err = ad.UserRepository.AddUser(c, request.Name, request.Balance)
+	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			Result: []models.ErrorDetail{
 				{
-					Code:    "EMPTY_VALUES",
-					Message: "Empty values are written in the form",
+					Code:    "ERROR_CREATE_USERS",
+					Message: "Couldn't create user",
+					Metadata: models.Properties{
+						Properties1: err.Error(),
+					},
 				},
 			},
 		})
 		return
 	}
 
-	user, err := lc.UserRepository.GetUserByEmail(c, loginRequest.Email)
+	user, err := ad.UserRepository.GetUserByEmail(c, "")
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			Result: []models.ErrorDetail{
@@ -57,17 +65,6 @@ func (lc *AuthController) Signin(c *gin.Context) {
 		return
 	}
 
-	if bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginRequest.Password)) != nil {
-		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			Result: []models.ErrorDetail{
-				{
-					Code:    "PASSWORD_INCORRECT",
-					Message: "Password doesn't match",
-				},
-			},
-		})
-		return
-	}
 	accessToken, err := tokenutil.CreateAccessToken(&user, `access-secret-key`, 50) //
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{

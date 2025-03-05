@@ -34,10 +34,16 @@ type Password struct {
 	ConfirmPassword string `json:"confirmPassword"`
 }
 
+type AddUser struct {
+	Name    string `json:"name"`
+	Balance int    `json:"balance"`
+}
+
 type UserRepository interface {
 	GetUserByEmail(c context.Context, email string) (User, error)
 	GetUserByID(c context.Context, userID int) (User, error)
 	GetProfile(c context.Context, userID int) (UserProfile, error)
 	CreateUser(c context.Context, user UserRequest) (int, error)
 	EditPersonalData(c context.Context, userID int, name string, email string, phoneNumber string, Birthday string) error
+	AddUser(c context.Context, name string, balance int) (int, error) 
 }

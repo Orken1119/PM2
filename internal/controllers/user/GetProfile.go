@@ -3,7 +3,7 @@ package user
 import (
 	"net/http"
 
-	models "github.com/Orken1119/PM2/internal/models/auth_models"
+	models "github.com/Orken1119/PM2/internal/models"
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,6 +11,7 @@ type UserController struct {
 	UserRepository models.UserRepository
 }
 
+// @Tags user-controller
 // @Tags user
 // @Accept json
 // @Produce json

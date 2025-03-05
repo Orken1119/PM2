@@ -1,0 +1,178 @@
+definitions:
+  github_com_Orken1119_PM2_internal_models.AddUser:
+    properties:
+      balance:
+        type: integer
+      name:
+        type: string
+    type: object
+  github_com_Orken1119_PM2_internal_models.ErrorDetail:
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+      metadata:
+        $ref: '#/definitions/github_com_Orken1119_PM2_internal_models.Properties'
+    type: object
+  github_com_Orken1119_PM2_internal_models.ErrorResponse:
+    properties:
+      errors:
+        items:
+          $ref: '#/definitions/github_com_Orken1119_PM2_internal_models.ErrorDetail'
+        type: array
+    type: object
+  github_com_Orken1119_PM2_internal_models.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  github_com_Orken1119_PM2_internal_models.Password:
+    properties:
+      confirmPassword:
+        type: string
+      password:
+        type: string
+    type: object
+  github_com_Orken1119_PM2_internal_models.Properties:
+    properties:
+      additionalProp1:
+        type: string
+      additionalProp2:
+        type: string
+      additionalProp3:
+        type: string
+    type: object
+  github_com_Orken1119_PM2_internal_models.SuccessResponse:
+    properties:
+      metadata:
+        $ref: '#/definitions/github_com_Orken1119_PM2_internal_models.Properties'
+      result: {}
+    type: object
+  github_com_Orken1119_PM2_internal_models.UserRequest:
+    properties:
+      email:
+        type: string
+      password:
+        $ref: '#/definitions/github_com_Orken1119_PM2_internal_models.Password'
+      phoneNumber:
+        type: string
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: localhost:1136
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server celler server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Ozinshe API
+  version: "1.0"
+paths:
+  /admin/add-user:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Orken1119_PM2_internal_models.AddUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_PM2_internal_models.SuccessResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_PM2_internal_models.ErrorResponse'
+      summary: Add user
+      tags:
+      - admin-controller
+  /signin:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Orken1119_PM2_internal_models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_PM2_internal_models.SuccessResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_PM2_internal_models.ErrorResponse'
+      tags:
+      - auth-controller
+  /signup:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Orken1119_PM2_internal_models.UserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_PM2_internal_models.SuccessResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_PM2_internal_models.ErrorResponse'
+      tags:
+      - auth-controller
+  /user/profile:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_PM2_internal_models.SuccessResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_PM2_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - user-controller
+      - user
+securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
